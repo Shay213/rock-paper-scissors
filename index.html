@@ -4,21 +4,33 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="game-container">
-        <div>
+        <div class="top-content">
             <h1>Rock Paper Scissors</h1>
             <button type="button">X</button>
         </div>
-        <div><button type="button">Play</button></div>
-        <div><label for="rounds">How many rounds?</label></div>
-        <div><input type="number" name="rounds" id="rounds" min="1"></div>
-        <div><button type="Exit">Exit</button></div>
+        <div class="bottom-content">
+            <div class="play disappear"><button type="button" class="btn">Play</button></div>
+            <div class="rounds disappear">
+                <label for="rounds">How many rounds?</label>
+                <input type="number" name="rounds" id="rounds" min="1">
+            </div>
+            <div class="exit disappear"><button type="Exit" class="btn">Exit</button></div>
+
+            <div class="playerChoices">
+                <img class="rock" src="./img/rock.png" alt="rock">
+                <img class="paper" src="./img/paper.png" alt="paper">
+                <img class="scissors" src="./img/scissors.png" alt="scissors">
+            </div>
+
+        </div>
         
-        <a href="http://www.freepik.com">Designed by rawpixel.com / Freepik</a>
+        <!--<a href="http://www.freepik.com">Designed by rawpixel.com / Freepik</a>-->
     </div>
     <script src="javascript.js"></script>
 </body>

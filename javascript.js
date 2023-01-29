@@ -104,4 +104,25 @@ function game(){
     }
 }
 
-game();
+//game();
+
+
+const playBtn = document.querySelector('.play');
+const bottomContentItems = document.querySelectorAll('.bottom-content div');
+const playerChoices = document.querySelectorAll('.playerChoices img');
+
+playBtn.addEventListener('click', startGame);
+
+playerChoices.forEach(el => {
+    el.addEventListener('click', playerChoice);
+});
+
+function playerChoice(e){
+    console.log(e.target.classList.value);
+}
+
+function startGame(e){
+    bottomContentItems.forEach(el => {
+        el.classList.add('disappear');
+    });
+}
