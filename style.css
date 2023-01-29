@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,400;0,700;0,900;1,300&display=swap');
+
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    font-family: 'Roboto', Arial, Helvetica, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color:  #FFFBF2;
+}
+
+.game-container{
+    width: 500px;
+    height: 300px;
+    border-radius: 8px;
+    background-color: #BB9D5A;
+    display: flex;
+    flex-direction: column;
+}
+
+button{
+    cursor: pointer;
+}
+
+.top-content{
+    display: flex;
+    margin-right: 0;
+}
+
+.top-content h1{
+    flex: 1;
+    text-align: center;
+}
+
+.top-content button{
+    height: 30px;
+    flex: 0 0 30px;
+    border-radius: 5px;
+    margin: 7px 7px 0 0;
+    border: none;
+    font-weight: 700;
+    background-color: transparent;
+    font-size: 16px;
+    color: rgba(255, 254, 253, 0.9);
+}
+
+.bottom-content{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    font-weight: 700;
+}
+
+.bottom-content input{
+    width: 40px;
+    border: none;
+    border-radius: 5px;
+}
+
+.bottom-content .btn{
+    width: 80px;
+    padding: 8px 0;
+    border: none;
+    font-size: 20px;
+    background-color: transparent;
+    font-weight: 700;
+}
+
+.exit{
+    margin-bottom: auto;
+}
+
+.bottom-content a{
+    text-decoration: none;
+    color: #FFFEFD;
+    font-size: 12px;
+    font-weight: 200;
+    text-align: center;
+    padding-bottom: 10px;
+}
