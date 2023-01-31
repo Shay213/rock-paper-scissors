@@ -71,7 +71,7 @@ button{
     font-weight: 700;
 }
 
-.availableChoices{
+.playerAvailableChoices{
     display: flex;
     gap: 12px;
 }
@@ -88,6 +88,10 @@ button{
 
 .disappear{
     display: none;
+}
+
+.wrongInputValue{
+    background-color: rgba(235, 64, 52);
 }
 
 /*a{

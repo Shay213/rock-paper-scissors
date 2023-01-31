@@ -109,22 +109,44 @@ function game(){
 
 const playBtn = document.querySelector('.play');
 const bottomContentItems = document.querySelectorAll('.bottom-content .menuOption');
-const availableChoices = document.querySelectorAll('.availableChoices img');
+const playerAvailableChoices = document.querySelectorAll('.playerAvailableChoices img');
+const pcChoices = document.querySelectorAll('.pcChoices img');
+const roundsInput = document.getElementById("rounds");
 
 // Start game if play button is pressed
 playBtn.addEventListener('click', startGame);
 
 function startGame(e){
-    // hide main menu
-    showOrHide(bottomContentItems);
-    // show rock paper scissors images
-    showOrHide(availableChoices, availableChoice => availableChoice.addEventListener('click', playerChoice));
+    // its possible to get NaN and negatives
+    let howManyRounds = roundsInput.valueAsNumber;
+    let howManyRoundsValid = howManyRounds < 1 || Number.isNaN(howManyRounds);
+
+    if(howManyRoundsValid){
+        roundsInput.classList.add('wrongInputValue');
+        roundsInput.addEventListener('click', removeWrongInputClass);
+    } else {
+        // hide main menu
+        showOrHide(bottomContentItems);
+        // show rock paper scissors images
+        showOrHide(playerAvailableChoices, availableChoice => availableChoice.addEventListener('click', playerChoice));
+    }
+
+    function removeWrongInputClass(el){
+        el.target.classList.remove('wrongInputValue');
+        el.target.removeEventListener('click', removeWrongInputClass);
+    }
 }
 
 function playerChoice(e){
     let clickedImage = e.target;
     // hide all choices except clickedImage
-    showOrHide(availableChoices, availableChoice => availableChoice.removeEventListener('click', playerChoice), clickedImage);
+    showOrHide(playerAvailableChoices, availableChoice => availableChoice.removeEventListener('click', playerChoice), clickedImage);
+    // try to find better place for triggering showpcchoice
+    showPcChoice(1);
+}
+
+function showPcChoice(number){
+    pcChoices[number].classList.remove('disappear');
 }
 
 function showOrHide(elements, doSomethingExtra = '', filterOutElement = ''){
