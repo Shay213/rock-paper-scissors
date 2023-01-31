@@ -108,13 +108,18 @@ function game(){
 
 
 const playBtn = document.querySelector('.play');
-const bottomContentItems = document.querySelectorAll('.bottom-content .menuOption');
+const menuOptions = document.querySelectorAll('.main-content .menuOption');
 const playerAvailableChoices = document.querySelectorAll('.playerAvailableChoices img');
 const pcChoices = document.querySelectorAll('.pcChoices img');
 const roundsInput = document.getElementById("rounds");
+const sideContent = document.querySelector('.sideContent');
+const playerPcChoicesText = document.querySelectorAll('.choicesText');
+const topRightExit = document.querySelector('.exitTR');
 
 // Start game if play button is pressed
 playBtn.addEventListener('click', startGame);
+// exit to main menu
+topRightExit.addEventListener('click', mainMenuExit);
 
 function startGame(e){
     // its possible to get NaN and negatives
@@ -125,8 +130,11 @@ function startGame(e){
         roundsInput.classList.add('wrongInputValue');
         roundsInput.addEventListener('click', removeWrongInputClass);
     } else {
+        sideContent.classList.remove('disappear');
+        // show player and pc choice text
+        showOrHide(playerPcChoicesText);
         // hide main menu
-        showOrHide(bottomContentItems);
+        showOrHide(menuOptions);
         // show rock paper scissors images
         showOrHide(playerAvailableChoices, availableChoice => availableChoice.addEventListener('click', playerChoice));
     }
@@ -140,22 +148,43 @@ function startGame(e){
 function playerChoice(e){
     let clickedImage = e.target;
     // hide all choices except clickedImage
-    showOrHide(playerAvailableChoices, availableChoice => availableChoice.removeEventListener('click', playerChoice), clickedImage);
+    showOrHide(playerAvailableChoices, availableChoice => availableChoice.removeEventListener('click', playerChoice), filterOutClickedImg);
     // try to find better place for triggering showpcchoice
     showPcChoice(1);
+
+    function filterOutClickedImg(img){
+        return !(img === clickedImage);
+    }
 }
 
 function showPcChoice(number){
     pcChoices[number].classList.remove('disappear');
 }
 
+function mainMenuExit(e){
+    let allImgs = Array.from(pcChoices).concat(Array.from(playerAvailableChoices));
+    
+    sideContent.classList.add('disappear');
+    // hide player and pc choice text
+    showOrHide(playerPcChoicesText);
+    // hide rock paper scissors images
+    showOrHide(allImgs, '', filterOutDisappeared);
+    // show main menu
+    showOrHide(menuOptions);
+
+    function filterOutDisappeared(img){
+        return !img.classList.contains('disappear');
+    }
+}
+
 function showOrHide(elements, doSomethingExtra = '', filterOutElement = ''){
-    elements = [...elements].filter( el => !(el === filterOutElement));
+    let isFunction = x => typeof x === 'function';  
+    if(isFunction(filterOutElement))
+        elements = [...elements].filter( el => filterOutElement(el));
 
     elements.forEach(el => {
         el.classList.toggle('disappear');
-        if(typeof doSomethingExtra === 'function'){
+        if(isFunction(doSomethingExtra))
             doSomethingExtra(el);
-        }
     });
 }

@@ -10,29 +10,42 @@
 <body>
 
     <div class="game-container">
-        <div class="top-content">
+
+        <div class="header">
             <h1>Rock Paper Scissors</h1>
-            <button type="button">X</button>
+            <button class="exitTR" type="button">X</button>
         </div>
-        <div class="bottom-content">
-            <div class="play menuOption"><button type="button" class="btn">Play</button></div>
-            <div class="rounds menuOption">
-                <label for="rounds">How many rounds?</label>
-                <input type="number" name="rounds" id="rounds" min="1" value="1">
-            </div>
-            <div class="exit menuOption"><button type="Exit" class="btn">Exit</button></div>
 
-            <div class="playerAvailableChoices">
-                <img class="activeImage disappear" src="./img/rock.png" alt="rock">
-                <img class="activeImage disappear" src="./img/paper.png" alt="paper">
-                <img class="activeImage disappear" src="./img/scissors.png" alt="scissors">
-            </div>
-            <div class="pcChoices">
-                <img class="disappear" src="./img/rock.png" alt="rock">
-                <img class="disappear" src="./img/paper.png" alt="paper">
-                <img class="disappear" src="./img/scissors.png" alt="scissors">
-            </div>
+        <div class="content-container">
+            <div class="main-content">
+                <div class="play menuOption"><button type="button" class="btn">Play</button></div>
+                <div class="rounds menuOption">
+                    <label for="rounds">How many rounds?</label>
+                    <input type="number" name="rounds" id="rounds" min="1" value="1">
+                </div>
+                <div class="exit menuOption"><button type="Exit" class="btn">Exit</button></div>
 
+                <div class="choicesText disappear"><p>Your choice: </p></div>
+                <div class="playerAvailableChoices">
+                    <img class="activeImage disappear" src="./img/rock.png" alt="rock">
+                    <img class="activeImage disappear" src="./img/paper.png" alt="paper">
+                    <img class="activeImage disappear" src="./img/scissors.png" alt="scissors">
+                </div>
+                <div class="choicesText disappear"><p>PC choice: </p></div>
+                <div class="pcChoices">
+                    <img class="disappear" src="./img/rock.png" alt="rock">
+                    <img class="disappear" src="./img/paper.png" alt="paper">
+                    <img class="disappear" src="./img/scissors.png" alt="scissors">
+                </div>
+            </div>
+            
+            <div class="sideContent disappear">
+                <h4>Summary</h4>
+                <p>Rounds played: </p>
+                <p>You won: 1 round</p>
+                <p>Pc won: 1 round</p>
+                <p>You won round!</p>
+            </div>
         </div>
         
         <!--<a href="http://www.freepik.com">Designed by rawpixel.com / Freepik</a>-->
