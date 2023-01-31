@@ -108,21 +108,32 @@ function game(){
 
 
 const playBtn = document.querySelector('.play');
-const bottomContentItems = document.querySelectorAll('.bottom-content div');
-const playerChoices = document.querySelectorAll('.playerChoices img');
+const bottomContentItems = document.querySelectorAll('.bottom-content .menuOption');
+const availableChoices = document.querySelectorAll('.availableChoices img');
 
+// Start game if play button is pressed
 playBtn.addEventListener('click', startGame);
 
-playerChoices.forEach(el => {
-    el.addEventListener('click', playerChoice);
-});
-
-function playerChoice(e){
-    console.log(e.target.classList.value);
+function startGame(e){
+    // hide main menu
+    showOrHide(bottomContentItems);
+    // show rock paper scissors images
+    showOrHide(availableChoices, availableChoice => availableChoice.addEventListener('click', playerChoice));
 }
 
-function startGame(e){
-    bottomContentItems.forEach(el => {
-        el.classList.add('disappear');
+function playerChoice(e){
+    let clickedImage = e.target;
+    // hide all choices except clickedImage
+    showOrHide(availableChoices, availableChoice => availableChoice.removeEventListener('click', playerChoice), clickedImage);
+}
+
+function showOrHide(elements, doSomethingExtra = '', filterOutElement = ''){
+    elements = [...elements].filter( el => !(el === filterOutElement));
+
+    elements.forEach(el => {
+        el.classList.toggle('disappear');
+        if(typeof doSomethingExtra === 'function'){
+            doSomethingExtra(el);
+        }
     });
 }

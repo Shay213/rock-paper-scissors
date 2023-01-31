@@ -59,6 +59,7 @@ button{
     width: 40px;
     border: none;
     border-radius: 5px;
+    text-align: center;
 }
 
 .bottom-content .btn{
@@ -70,7 +71,7 @@ button{
     font-weight: 700;
 }
 
-.playerChoices{
+.availableChoices{
     display: flex;
     gap: 12px;
 }
@@ -79,6 +80,9 @@ button{
     width: 100px;
     height: 100px;
     border-radius: 50px;
+}
+
+.activeImage{
     cursor: pointer;
 }
 
