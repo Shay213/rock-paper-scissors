@@ -13,11 +13,12 @@ body{
 
 .game-container{
     width: 500px;
-    height: 370px;
+    height: 250px;
     border-radius: 8px;
     background-color: #BB9D5A;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 
 .content-container{
@@ -48,6 +49,10 @@ button{
     background-color: transparent;
     font-size: 16px;
     color: rgba(255, 254, 253, 0.9);
+}
+
+.header button:hover{
+    background-color: rgba(235, 64, 52);
 }
 
 .main-content{
@@ -95,6 +100,8 @@ button{
     border: 1px solid black;
     border-right: none;
     border-radius: 5px;
+    display: flex;
+    flex-direction: column;
 }
 
 .sideContent p{
@@ -105,14 +112,65 @@ button{
     margin: 0;
 }
 
+.sideContent .continue{
+    padding: 15px;
+    border-radius: 8px;
+    border: none;
+    font-size: 16px;
+    background-color: #ebddbd;
+}
 
+.sideContent .continue:hover{
+    transform: scale(1.04);
+    transition: 0.6s;
+}
 
+.sideContent .roundResult{
+    font-weight: 700;
+    font-size: 16px;
+}
 
+.final-message{
+    position: absolute;
+    left: 0; 
+    right: 0; 
+    bottom: 0;
+    width: 80%;
+    margin-left: auto; 
+    margin-right: auto; 
+    padding: 7px;
+    background-color: #5f471a;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
 
+.final-message h3{
+    margin: 0;
+    color: white;
+}
 
+.final-message-btn{
+    padding: 8px;
+    border: 2px solid white;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #5f471a;
+    color: white;
+    font-weight: 700;
+}
 
-.activeImage{
+.final-message-btn:hover{
+    background-color: #5f4c29;
+}
+
+.activeImage:hover{
     cursor: pointer;
+    transform: rotateZ(20deg);
+    width: 81px;
+    height: 81px;
+    border: 2px solid white;
 }
 
 .disappear{

@@ -1,24 +1,198 @@
 let getRandomInt = (max) => Math.floor(Math.random()*max);
-const VALID_CHOICES = ["rock", "paper", "scissors"];
+const playBtn = document.querySelector('.play');
+const menuOptions = document.querySelectorAll('.main-content .menuOption');
+const playerAvailableChoices = document.querySelectorAll('.playerAvailableChoices img');
+const pcChoices = document.querySelectorAll('.pcChoices img');
+const roundsInput = document.getElementById("rounds");
+const sideContent = document.querySelector('.sideContent');
+const playerPcChoicesText = document.querySelectorAll('.choicesText');
+const topRightExit = document.querySelector('.exitTR');
+const continueBtn = document.querySelector('.continue');
+const roundResultElement = document.querySelector('.roundResult');
+const exitGameBtn = document.querySelector('.exit');
+const gameContainer = document.querySelector('.game-container');
+const finalMessageElement = document.querySelector('.final-message');
+const finalMessageBtn = document.querySelector('.final-message-btn');
+const finalMessageText = document.querySelector('.final-message h3');
 
-function completeGameRound(playerChoice, pcChoice){
-    // if cancel button was pressed
-    if(playerChoice === null) return null;
+const roundsPlayedElement = document.querySelector('.roundsPlayed');
+const playerRoundsWonElement = document.querySelector('.playerRoundsWon');
+const pcRoundsWonElement = document.querySelector('.pcRoundsWon');
 
-    return isPlayerChoiceValid() ? getRoundResult() : false;
+game();
 
-    function isPlayerChoiceValid(){
-        let playerChoiceIsString = typeof playerChoice === "string";
+function game(){
+    let roundsCounter = 0
+    let playerRoundsWon = 0;
+    let pcRoundsWon = 0;
+    let roundResult = "";
 
-        return playerChoiceIsString ? (() => {
-            let playerChoiceInValidPool = VALID_CHOICES.includes(playerChoice.toLowerCase());
-            return playerChoiceInValidPool;
-        })() : false;
+    exitGameBtn.addEventListener('click', e => {
+        gameContainer.style.display = 'none';
+    });
+
+    // Start game if play button is pressed
+    playBtn.addEventListener('click', startGame);
+
+    function startGame(e){
+        playBtn.removeEventListener('click', startGame);
+        gameContainer.style.height = '410px';
+        // exit to main menu
+        topRightExit.classList.remove('disappear');
+        topRightExit.addEventListener('click', mainMenuExit);
+        let howManyRounds = roundsInput.valueAsNumber;
+        let howManyRoundsValid = howManyRounds < 1 || Number.isNaN(howManyRounds);
+
+        if(howManyRoundsValid){
+            roundsInput.classList.add('wrongInputValue');
+            roundsInput.addEventListener('click', removeWrongInputClass);
+        } else {
+            sideContent.classList.remove('disappear');
+            // show player and pc choice text
+            showOrHide(playerPcChoicesText);
+            // hide main menu
+            showOrHide(menuOptions);
+            // show rock paper scissors images and allow player to choose
+            showPlayerChoices();
+        }
+        function getPlayerChoice(e){
+            let clickedImage = e.target;
+            let pcChoice = getPcChoice();
+
+            clickedImage.classList.remove('activeImage');
+            
+            // hide all choices except clickedImage
+            clickedImage.removeEventListener('click', getPlayerChoice);
+            showOrHide(playerAvailableChoices, availableChoice => availableChoice.removeEventListener('click', getPlayerChoice), filterOutClickedImg);
+            // get round result and display summarize of the round after player made choice
+            summarizeRound(clickedImage, pcChoice);
+        
+            function filterOutClickedImg(img){
+                return !(img === clickedImage);
+            }
+        }
+
+        function showPlayerChoices(){
+            showOrHide(playerAvailableChoices, availableChoice => availableChoice.addEventListener('click', getPlayerChoice));
+        }
+
+        function summarizeRound(playerChoice, pcChoice){
+            roundsCounter++;
+            roundResult = getRoundResult(playerChoice.classList[0], pcChoice.classList[0]);
+            updateScore();
+            displayRoundInfo();
+
+            // add rounds check 
+            if(roundsCounter >= howManyRounds){
+                finalMessage();
+                finalMessageElement.classList.remove('disappear');
+                finalMessageBtn.addEventListener('click', gameFinished);
+            }
+            else{
+                continueBtn.classList.remove('disappear');
+                continueBtn.addEventListener('click', nextRound);
+            }
+
+            function nextRound(e){
+                playerChoice.classList.add('activeImage');
+                continueBtn.classList.add("disappear");
+                roundResultElement.textContent = "";
+                playerChoice.classList.toggle('disappear');
+                pcChoice.classList.toggle('disappear');
+                continueBtn.removeEventListener('click', nextRound);
+                showPlayerChoices();
+            }
+        }
+
+        function gameFinished(e){
+            resetSideContentInfo();
+            mainMenuExit(e);
+        }
+
+        function resetSideContentInfo(){
+            roundsPlayedElement.textContent = `Rounds played: 0`;
+            playerRoundsWonElement.textContent = `You won: 0`;
+            pcRoundsWonElement.textContent = `Pc won: 0`;
+            roundResultElement.textContent = ``;
+        }
+
+        function mainMenuExit(e){
+            topRightExit.removeEventListener('click', mainMenuExit);
+            gameContainer.style.height = '250px';
+            let allImgs = Array.from(pcChoices).concat(Array.from(playerAvailableChoices));
+        
+            sideContent.classList.add('disappear');
+            // hide player and pc choice text
+            showOrHide(playerPcChoicesText);
+            // hide rock paper scissors images
+            showOrHide(allImgs, img => img.removeEventListener('click', getPlayerChoice), filterOutDisappeared);
+            // show main menu
+            showOrHide(menuOptions);
+            // hide final message
+            finalMessageBtn.removeEventListener('click', gameFinished);
+            finalMessageElement.classList.add('disappear');
+            allImgsActive();
+            
+            topRightExit.classList.add('disappear');
+            game();
+        
+            function filterOutDisappeared(img){
+                return !img.classList.contains('disappear');
+            }
+        }
+
+        function allImgsActive(){
+            playerAvailableChoices.forEach(el => {
+                if(!el.classList.contains('activeImage')){
+                    el.classList.add('activeImage');
+                }
+            });
+        }
     }
-    
-    function getRoundResult(){
-        if(playerChoice === pcChoice) return "It's a Tie!";
 
+    
+
+    function removeWrongInputClass(el){
+        el.target.classList.remove('wrongInputValue');
+        el.target.removeEventListener('click', removeWrongInputClass);
+    }
+
+    function updateScore(){
+        if(roundResult.includes("Win")){
+            playerRoundsWon++;
+        } else if(roundResult.includes("Lose")){
+            pcRoundsWon++;
+        } else{
+            playerRoundsWon++;
+            pcRoundsWon++;
+        }
+    }
+
+    function displayRoundInfo(){
+        roundsPlayedElement.textContent = `Rounds played: ${roundsCounter}`;
+        playerRoundsWonElement.textContent = `You won: ${playerRoundsWon}`;
+        pcRoundsWonElement.textContent = `Pc won: ${pcRoundsWon}`;
+        roundResultElement.textContent = `${roundResult}`;
+    }
+
+    function finalMessage(){
+        if(playerRoundsWon > pcRoundsWon)
+        finalMessageText.textContent = "Congratulations, You won the game!";
+        else if(playerRoundsWon < pcRoundsWon)
+        finalMessageText.textContent = "You Lost, that was a good game!";
+        else
+        finalMessageText.textContent = "It's a Tie, that was a good game!";
+    }
+
+    function getPcChoice(){
+        let choice = pcChoices[getRandomInt(3)];
+        choice.classList.remove('disappear');
+        return choice;
+    }
+
+    function getRoundResult(playerChoice, pcChoice){
+        if(playerChoice === pcChoice) return "It's a Tie!";
+    
         let result = "";
         
         switch(playerChoice){
@@ -34,157 +208,21 @@ function completeGameRound(playerChoice, pcChoice){
         }
         return result;
     }
-}
-
-function game(){
-    let playerRoundsWon = 0;
-    let pcRoundsWon = 0;
-    let roundResult = "";
-    let howManyRounds = Number(prompt("How many rounds would you like to play? "));
     
-    if(howManyRounds === 0) 
-        return null;
-    else if(Number.isNaN(howManyRounds)){
-        alert("That's not a number!");
-        game();
-    }
-    else
-        howManyRounds = Math.round(howManyRounds);
-        startGame();
-
-    function startGame(){
-        for(let i=1; i <= howManyRounds; i++){
-            let playerChoice = prompt("Please enter your choice(rock,paper,scissors): ");
-            let pcChoice = VALID_CHOICES[getRandomInt(3)];
-
-            roundResult = completeGameRound(playerChoice, pcChoice);
-            
-            if(roundResult === null){
-                break;
-            } else if(!roundResult) {
-                i--;
-                alert("Your choice is not valid!");
-            } else{
-                updateScore();
-                displayRoundInfo(i, playerChoice, pcChoice);
-            }
-        }
-        if(playerRoundsWon > 0 || pcRoundsWon > 0)
-            finalMessage();
-    }
-
-    function updateScore(){
-        if(roundResult.includes("Win")){
-            playerRoundsWon++;
-        } else if(roundResult.includes("Lose")){
-            pcRoundsWon++;
-        } else{
-            playerRoundsWon++;
-            pcRoundsWon++;
-        }
-    }
-
-    function displayRoundInfo(currentRound, playerChoice, pcChoice){
-        alert(`Round ${currentRound}:
-        Your choice is: ${playerChoice}
-        PC choice is: ${pcChoice}
-        ${roundResult} 
-        You won ${playerRoundsWon === 1 ? `1 round!` : `${playerRoundsWon}rounds`}
-        PC won ${pcRoundsWon === 1 ? `1 round!` : `${pcRoundsWon}rounds`}
-        `);
-    }
-
-    function finalMessage(){
-        if(playerRoundsWon > pcRoundsWon)
-            alert("Congratulations, You won the game!");
-        else if(playerRoundsWon < pcRoundsWon)
-            alert("You Lost, that was a good game!");
-        else
-            alert("It's a Tie, that was a good game!");
-    }
-}
-
-//game();
-
-
-const playBtn = document.querySelector('.play');
-const menuOptions = document.querySelectorAll('.main-content .menuOption');
-const playerAvailableChoices = document.querySelectorAll('.playerAvailableChoices img');
-const pcChoices = document.querySelectorAll('.pcChoices img');
-const roundsInput = document.getElementById("rounds");
-const sideContent = document.querySelector('.sideContent');
-const playerPcChoicesText = document.querySelectorAll('.choicesText');
-const topRightExit = document.querySelector('.exitTR');
-
-// Start game if play button is pressed
-playBtn.addEventListener('click', startGame);
-// exit to main menu
-topRightExit.addEventListener('click', mainMenuExit);
-
-function startGame(e){
-    // its possible to get NaN and negatives
-    let howManyRounds = roundsInput.valueAsNumber;
-    let howManyRoundsValid = howManyRounds < 1 || Number.isNaN(howManyRounds);
-
-    if(howManyRoundsValid){
-        roundsInput.classList.add('wrongInputValue');
-        roundsInput.addEventListener('click', removeWrongInputClass);
-    } else {
-        sideContent.classList.remove('disappear');
-        // show player and pc choice text
-        showOrHide(playerPcChoicesText);
-        // hide main menu
-        showOrHide(menuOptions);
-        // show rock paper scissors images
-        showOrHide(playerAvailableChoices, availableChoice => availableChoice.addEventListener('click', playerChoice));
-    }
-
-    function removeWrongInputClass(el){
-        el.target.classList.remove('wrongInputValue');
-        el.target.removeEventListener('click', removeWrongInputClass);
-    }
-}
-
-function playerChoice(e){
-    let clickedImage = e.target;
-    // hide all choices except clickedImage
-    showOrHide(playerAvailableChoices, availableChoice => availableChoice.removeEventListener('click', playerChoice), filterOutClickedImg);
-    // try to find better place for triggering showpcchoice
-    showPcChoice(1);
-
-    function filterOutClickedImg(img){
-        return !(img === clickedImage);
-    }
-}
-
-function showPcChoice(number){
-    pcChoices[number].classList.remove('disappear');
-}
-
-function mainMenuExit(e){
-    let allImgs = Array.from(pcChoices).concat(Array.from(playerAvailableChoices));
+    function showOrHide(elements, doSomethingExtra = '', filterOutElement = ''){
+        console.log(elements);
+        let isFunction = x => typeof x === 'function';  
+        if(isFunction(filterOutElement))
+            elements = [...elements].filter( el => filterOutElement(el));
     
-    sideContent.classList.add('disappear');
-    // hide player and pc choice text
-    showOrHide(playerPcChoicesText);
-    // hide rock paper scissors images
-    showOrHide(allImgs, '', filterOutDisappeared);
-    // show main menu
-    showOrHide(menuOptions);
-
-    function filterOutDisappeared(img){
-        return !img.classList.contains('disappear');
+        elements.forEach(el => {
+            el.classList.toggle('disappear');
+            if(isFunction(doSomethingExtra))
+                doSomethingExtra(el);
+        });
     }
 }
 
-function showOrHide(elements, doSomethingExtra = '', filterOutElement = ''){
-    let isFunction = x => typeof x === 'function';  
-    if(isFunction(filterOutElement))
-        elements = [...elements].filter( el => filterOutElement(el));
 
-    elements.forEach(el => {
-        el.classList.toggle('disappear');
-        if(isFunction(doSomethingExtra))
-            doSomethingExtra(el);
-    });
-}
+
+

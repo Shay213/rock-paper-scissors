@@ -13,7 +13,7 @@
 
         <div class="header">
             <h1>Rock Paper Scissors</h1>
-            <button class="exitTR" type="button">X</button>
+            <button class="exitTR disappear" type="button">X</button>
         </div>
 
         <div class="content-container">
@@ -27,25 +27,31 @@
 
                 <div class="choicesText disappear"><p>Your choice: </p></div>
                 <div class="playerAvailableChoices">
-                    <img class="activeImage disappear" src="./img/rock.png" alt="rock">
-                    <img class="activeImage disappear" src="./img/paper.png" alt="paper">
-                    <img class="activeImage disappear" src="./img/scissors.png" alt="scissors">
+                    <img class="rock activeImage disappear" src="./img/rock.png" alt="rock">
+                    <img class="paper activeImage disappear" src="./img/paper.png" alt="paper">
+                    <img class="scissors activeImage disappear" src="./img/scissors.png" alt="scissors">
                 </div>
                 <div class="choicesText disappear"><p>PC choice: </p></div>
                 <div class="pcChoices">
-                    <img class="disappear" src="./img/rock.png" alt="rock">
-                    <img class="disappear" src="./img/paper.png" alt="paper">
-                    <img class="disappear" src="./img/scissors.png" alt="scissors">
+                    <img class="rock disappear" src="./img/rock.png" alt="rock">
+                    <img class="paper disappear" src="./img/paper.png" alt="paper">
+                    <img class="scissors disappear" src="./img/scissors.png" alt="scissors">
                 </div>
             </div>
             
             <div class="sideContent disappear">
                 <h4>Summary</h4>
-                <p>Rounds played: </p>
-                <p>You won: 1 round</p>
-                <p>Pc won: 1 round</p>
-                <p>You won round!</p>
+                <p class="roundsPlayed">Rounds played: 0</p>
+                <p class="playerRoundsWon">You won: 0</p>
+                <p class="pcRoundsWon">Pc won: 0</p>
+                <p class="roundResult"></p>
+                <button class="continue disappear" type="button">Next Round</button>
             </div>
+        </div>
+
+        <div class="final-message disappear">
+            <h3></h3>
+            <button class="final-message-btn">Main Menu</button>
         </div>
         
         <!--<a href="http://www.freepik.com">Designed by rawpixel.com / Freepik</a>-->
