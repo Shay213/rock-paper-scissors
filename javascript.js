@@ -105,7 +105,6 @@ function game(){
         }
 
         function gameFinished(e){
-            resetSideContentInfo();
             mainMenuExit(e);
         }
 
@@ -117,6 +116,7 @@ function game(){
         }
 
         function mainMenuExit(e){
+            resetSideContentInfo();
             topRightExit.removeEventListener('click', mainMenuExit);
             gameContainer.style.height = '250px';
             let allImgs = Array.from(pcChoices).concat(Array.from(playerAvailableChoices));
